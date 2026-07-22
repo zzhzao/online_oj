@@ -2,8 +2,7 @@
 //MySQL 版本
 #include "../comm/util.hpp"
 #include "../comm/log.hpp"
-#include "include/mysql.h"
-
+#include <mysql/mysql.h>
 #include <iostream>
 #include <string>
 #include <vector>
