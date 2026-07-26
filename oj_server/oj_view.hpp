@@ -2,7 +2,7 @@
 #include<iostream>
 #include<string>
 #include<ctemplate/template.h>
-#include"oj_model.hpp"
+#include"oj_model2.hpp"
 
 namespace ns_view
 {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
     <meta charset="UTF-8">
@@ -7,11 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{number}}.{{title}}</title>
     <!-- 引入ACE插件 -->
-    <!-- 官网链接：https://ace.c9.io/ -->
-    <!-- CDN链接：https://cdnjs.com/libraries/ace -->
-    <!-- 使用介绍：https://www.iteye.com/blog/ybc77107-2296261 -->
-    <!-- https://justcode.ikeepstudying.com/2016/05/ace-editor-%E5%9C%A8%E7%BA%BF%E4%BB%A3%E7%A0%81%E7%BC%96%E8%BE%91%E6%9E%81%E5%85%B6%E9%AB%98%E4%BA%AE/ -->
-    <!-- 引入ACE CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js" type="text/javascript"
         charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ext-language_tools.js" type="text/javascript"
@@ -23,157 +18,415 @@
         * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
-        html,
-        body {
+        html, body {
             width: 100%;
-            height: 100%;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
         }
 
-        .container .navbar {
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 导航栏 */
+        .navbar {
             width: 100%;
-            height: 50px;
-            background-color: black;
-            /* 给父级标签设置overflow，取消后续float带来的影响 */
-            overflow: hidden;
+            background-color: #2c3e50;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .container .navbar a {
-            /* 设置a标签是行内块元素，允许你设置宽度 */
-            display: inline-block;
-            /* 设置a标签的宽度,a标签默认行内元素，无法设置宽度 */
-            width: 80px;
-            /* 设置字体颜色 */
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .navbar-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
             color: white;
-            /* 设置字体的大小 */
-            font-size: large;
-            /* 设置文字的高度和导航栏一样的高度 */
-            line-height: 50px;
-            /* 去掉a标签的下划线 */
             text-decoration: none;
-            /* 设置a标签中的文字居中 */
-            text-align: center;
+            padding: 15px 0;
         }
 
-        /* 设置鼠标事件 */
-        .container .navbar a:hover {
-            background-color: green;
+        .navbar-links {
+            display: flex;
+            list-style: none;
         }
 
-        .container .navbar .login {
-            float: right;
+        .navbar-links li {
+            margin-left: 20px;
         }
-        
-        .container .part1 {
+
+        .navbar-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 15px 10px;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .navbar-links a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #3498db;
+        }
+
+        .login {
+            background-color: #3498db;
+            padding: 8px 16px;
+            border-radius: 4px;
+        }
+
+        .login:hover {
+            background-color: #2980b9 !important;
+            color: white !important;
+        }
+
+        /* 主要内容区域 */
+        .main-content {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
             width: 100%;
-            height: 600px;
-            overflow: hidden;
         }
 
-        .container .part1 .left_desc {
-            width: 50%;
-            height: 600px;
-            float: left;
-            overflow: scroll;
+        /* 题目信息 */
+        .problem-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
         }
 
-        .container .part1 .left_desc h3 {
-            padding-top: 10px;
-            padding-left: 10px;
+        .problem-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
         }
 
-        .container .part1 .left_desc pre {
-            padding-top: 10px;
-            padding-left: 10px;
-            font-size: medium;
-            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-        }
-
-        .container .part1 .right_code {
-            width: 50%;
-            float: right;
-        }
-
-        .container .part1 .right_code .ace_editor {
-            height: 600px;
-        }
-        .container .part2 {
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .container .part2 .result {
-            width: 300px;
-            float: left;
-        }
-
-        .container .part2 .btn-submit {
-            width: 120px;
-            height: 50px;
-            font-size: large;
-            float: right;
-            background-color: #26bb9c;
-            color: #FFF;
-            /* 给按钮带上圆角 */
-            /* border-radius: 1ch; */
-            border: 0px;
-            margin-top: 10px;
-            margin-right: 10px;
-        }
-        .container .part2 button:hover {
-            color:green;
-        }
-
-        .container .part2 .result {
-            margin-top: 15px;
+        .problem-difficulty {
             margin-left: 15px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .container .part2 .result pre {
-            font-size: large;
+        .difficulty-easy {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .difficulty-medium {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .difficulty-hard {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        /* 题目内容区域 */
+        .problem-content {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        /* 题目描述 */
+        .problem-description {
+            flex: 1;
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            overflow-y: auto;
+            max-height: 600px;
+        }
+
+        .problem-description h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .problem-description pre {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1rem;
+            line-height: 1.5;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* 代码编辑器 */
+        .code-editor {
+            flex: 1;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-header {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .editor-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .language-selector {
+            padding: 5px 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+            font-size: 0.9rem;
+        }
+
+        .ace_editor {
+            flex: 1;
+            border-radius: 8px;
+            font-size: 14px !important;
+            line-height: 1.5 !important;
+        }
+
+        /* 提交区域 */
+        .submit-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .result-area {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            min-height: 100px;
+            border-left: 4px solid #3498db;
+        }
+
+        .result-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .result-content {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .submit-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .submit-button:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 页脚 */
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer p {
+            margin: 0;
+            opacity: 0.8;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .problem-content {
+                flex-direction: column;
+            }
+
+            .problem-description,
+            .code-editor {
+                max-height: 500px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-container {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .navbar-links {
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
+            .navbar-links li {
+                margin: 0 10px;
+            }
+
+            .main-content {
+                padding: 20px 15px;
+            }
+
+            .problem-title {
+                font-size: 1.5rem;
+            }
+
+            .problem-description,
+            .code-editor {
+                padding: 15px;
+            }
+
+            .submit-section {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .problem-title {
+                font-size: 1.3rem;
+            }
+
+            .submit-button {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <!-- 导航栏， 功能不实现-->
-        <div class="navbar">
-            <a href="/">首页</a>
-            <a href="/all_questions">题库</a>
-            <a href="#">竞赛</a>
-            <a href="#">讨论</a>
-            <a href="#">求职</a>
-            <a class="login" href="#">登录</a>
-        </div>
-        <!-- 左右呈现，题目描述和预设代码 -->
-        <div class="part1">
-            <div class="left_desc">
-                <h3><span id="number">{{number}}</span>.{{title}}_{{star}}</h3>
-                <pre>{{desc}}</pre>
+        <!-- 导航栏 -->
+        <nav class="navbar">
+            <div class="navbar-container">
+                <a href="/" class="navbar-logo">OJ平台</a>
+                <ul class="navbar-links">
+                    <li><a href="/">首页</a></li>
+                    <li><a href="/all_questions">题库</a></li>
+                    <li><a href="#">竞赛</a></li>
+                    <li><a href="#">讨论</a></li>
+                    <li><a href="#">求职</a></li>
+                    <li><a href="#" class="login">登录</a></li>
+                </ul>
             </div>
-            <div class="right_code">
-                <pre id="code" class="ace_editor"><textarea class="ace_text-input">{{pre_code}}</textarea></pre>
+        </nav>
+
+        <!-- 主要内容 -->
+        <div class="main-content">
+            <!-- 题目信息 -->
+            <div class="problem-header">
+                <h1 class="problem-title">
+                    <span id="number">{{number}}</span>. {{title}}
+                    <span class="problem-difficulty">{{star}}</span>
+                </h1>
+            </div>
+
+            <!-- 题目内容区域 -->
+            <div class="problem-content">
+                <!-- 题目描述 -->
+                <div class="problem-description">
+                    <h3>题目描述</h3>
+                    <pre>{{desc}}</pre>
+                </div>
+
+                <!-- 代码编辑器 -->
+                <div class="code-editor">
+                    <div class="editor-header">
+                        <div class="editor-title">编写代码</div>
+                        <select class="language-selector" id="language-selector">
+                            <option value="c_cpp">C++</option>
+                            <option value="python">Python</option>
+                            <option value="java">Java</option>
+                        </select>
+                    </div>
+                    <pre id="code" class="ace_editor"><textarea class="ace_text-input">{{pre_code}}</textarea></pre>
+                </div>
+            </div>
+
+            <!-- 提交区域 -->
+            <div class="submit-section">
+                <div class="result-area" id="result">
+                    <div class="result-title">运行结果</div>
+                    <div class="result-content"></div>
+                </div>
+                <button class="submit-button" onclick="submit()">提交代码</button>
             </div>
         </div>
-        <!-- 提交并且得到结果，并显示 -->
-        <div class="part2">
-            <div class="result"></div>
-            <button class="btn-submit" onclick="submit()">提交代码</button>
-        </div>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2026 个人OJ系统 | 专注于编程教育与实践</p>
+            </div>
+        </footer>
     </div>
+
     <script>
         //初始化对象
         editor = ace.edit("code");
 
-        //设置风格和语言（更多风格和语言，请到github上相应目录查看）
-        // 主题大全：http://www.manongjc.com/detail/25-cfpdrwkkivkikmk.html
+        //设置风格和语言
         editor.setTheme("ace/theme/monokai");
         editor.session.setMode("ace/mode/c_cpp");
 
         // 字体大小
-        editor.setFontSize(16);
+        editor.setFontSize(14);
         // 设置默认制表符的大小:
         editor.getSession().setTabSize(4);
 
@@ -188,15 +441,23 @@
             enableLiveAutocompletion: true
         });
 
+        // 语言选择器
+        document.getElementById('language-selector').addEventListener('change', function() {
+            var lang = this.value;
+            var mode = {
+                'c_cpp': 'ace/mode/c_cpp',
+                'python': 'ace/mode/python',
+                'java': 'ace/mode/java'
+            }[lang] || 'ace/mode/c_cpp';
+            editor.session.setMode(mode);
+        });
+
         function submit(){
-            // alert("嘿嘿!");
             // 1. 收集当前页面的有关数据, 1. 题号 2.代码
             var code = editor.getSession().getValue();
-            // console.log(code);
-            var number = $(".container .part1 .left_desc h3 #number").text();
-            // console.log(number);
+            var number = document.getElementById('number').textContent;
             var judge_url = "/judge/" + number;
-            // console.log(judge_url);
+            
             // 2. 构建json，并通过ajax向后台发起基于http的json请求
             $.ajax({
                 method: 'Post',   // 向后端发起请求的方式
@@ -204,52 +465,65 @@
                 dataType: 'json', // 告知server，我需要什么格式
                 contentType: 'application/json;charset=utf-8',  // 告知server，我给你的是什么格式
                 data: JSON.stringify({
-                    'code':code,
+                    'code': code,
                     'input': ''
                 }),
                 success: function(data){
                     //成功得到结果
-                    // console.log(data);
                     show_result(data);
                 }
             });
-            // 3. 得到结果，解析并显示到 result中
-            function show_result(data)
-            {
-                // console.log(data.status);
-                // console.log(data.reason);
-                // 拿到result结果标签
-                var result_div = $(".container .part2 .result");
-                // 清空上一次的运行结果
-                result_div.empty();
+        }
 
-                // 首先拿到结果的状态码和原因结果
-                var _status = data.status;
-                var _reason = data.reason;
+        // 3. 得到结果，解析并显示到 result中
+        function show_result(data) {
+            // 拿到result结果标签
+            var result_div = document.getElementById('result');
+            var result_content = result_div.querySelector('.result-content');
+            
+            // 清空上一次的运行结果
+            result_content.innerHTML = '';
 
-                var reason_lable = $( "<p>",{
-                       text: _reason
-                });
-                reason_lable.appendTo(result_div);
+            // 首先拿到结果的状态码和原因结果
+            var _status = data.status;
+            var _reason = data.reason;
 
-                if(_status == 0){
-                    // 请求是成功的，编译运行过程没出问题，但是结果是否通过看测试用例的结果
-                    var _stdout = data.stdout;
-                    var _stderr = data.stderr;
+            // 创建结果元素
+            var reason_element = document.createElement('div');
+            reason_element.textContent = _reason;
+            reason_element.style.marginBottom = '15px';
+            reason_element.style.fontWeight = '600';
+            
+            // 根据状态设置颜色
+            if (_status === 0) {
+                reason_element.style.color = '#155724';
+                reason_element.style.backgroundColor = '#d4edda';
+                reason_element.style.padding = '10px';
+                reason_element.style.borderRadius = '4px';
+            } else {
+                reason_element.style.color = '#721c24';
+                reason_element.style.backgroundColor = '#f8d7da';
+                reason_element.style.padding = '10px';
+                reason_element.style.borderRadius = '4px';
+            }
+            
+            result_content.appendChild(reason_element);
 
-                    var stdout_lable = $("<pre>", {
-                        text: _stdout
-                    });
+            if(_status === 0) {
+                // 请求是成功的，编译运行过程没出问题，但是结果是否通过看测试用例的结果
+                var _stdout = data.stdout;
+                var _stderr = data.stderr;
 
-                    var stderr_lable = $("<pre>", {
-                        text: _stderr
-                    })
-
-                    stdout_lable.appendTo(result_div);
-                    stderr_lable.appendTo(result_div);
+                if (_stdout) {
+                    var stdout_element = document.createElement('div');
+                    stdout_element.innerHTML = '<strong>标准输出:</strong><br><pre style="margin-top: 5px;">' + _stdout + '</pre>';
+                    result_content.appendChild(stdout_element);
                 }
-                else{
-                    // 编译运行出错,do nothing
+
+                if (_stderr) {
+                    var stderr_element = document.createElement('div');
+                    stderr_element.innerHTML = '<strong>标准错误:</strong><br><pre style="margin-top: 5px; color: #721c24;">' + _stderr + '</pre>';
+                    result_content.appendChild(stderr_element);
                 }
             }
         }

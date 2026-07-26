@@ -7,7 +7,7 @@ using namespace ns_control;
 
 static Control *ctrl_ptr = nullptr;
 
-int Recovery(int signo)
+void Recovery(int signo)
 {
     ctrl_ptr->RecoveryMachine();
 }

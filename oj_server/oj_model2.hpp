@@ -33,7 +33,7 @@ namespace ns_model
         int mem_limit;      //题目的空间要去(KB)
     };
 
-    const std::string oj_questions = "oj_questions";
+    const std::string oj_questions = "questions";
     const std::string host = "127.0.0.1";
     const std::string user = "oj_client";
     const std::string passwd = "123456";
@@ -56,7 +56,6 @@ namespace ns_model
                 return false;
             }
 
-            // 一定要设置该链接的编码格式, 要不然会出现乱码问题
             mysql_set_character_set(my, "utf8");
 
             LOG(INFO) << "连接数据库成功!" << "\n";
@@ -70,16 +69,29 @@ namespace ns_model
 
             // 提取结果
             MYSQL_RES *res = mysql_store_result(my);
+            if (res == nullptr)
+            {
+                if (mysql_field_count(my) > 0)
+                {
+                    LOG(WARNING) << "mysql_store_result 失败: " << mysql_error(my) << "\n";
+                }
+                mysql_close(my);
+                return false;
+            }
 
             // 分析结果
             int rows = mysql_num_rows(res); //获得行数量
             int cols = mysql_num_fields(res); //获得列数量
-
+            (void)cols;
             Question q;
 
             for(int i = 0; i < rows; i++)
             {
                 MYSQL_ROW row = mysql_fetch_row(res);
+                if (row == nullptr)
+                {
+                    break;
+                }
                 q.number = row[0];
                 q.title = row[1];
                 q.star = row[2];
@@ -91,10 +103,13 @@ namespace ns_model
 
                 out->push_back(q);
             }
+            LOG(INFO) << "questions填充完毕" << "\n";
             // 释放结果空间
-            free(res);
+            mysql_free_result(res);
+            LOG(INFO) << "释放空间成功" << "\n";
             // 关闭mysql连接
             mysql_close(my);
+            LOG(INFO) << "关闭mysql链接成功" << "\n";
 
             return true;
         }
@@ -124,4 +139,4 @@ namespace ns_model
         ~Model()
         {}
     };
-} // namespace ns_model
+} 
