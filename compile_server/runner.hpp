@@ -36,14 +36,14 @@ namespace ns_runner
             mem_rlimit.rlim_cur = _mem_limit * 1024;  // 转化为KB
             setrlimit(RLIMIT_AS, &mem_rlimit);
         }
-        // 在这里只需要指明文件名
+
 
 
         // cpu_limit 程序运行可以使用的最大cpu资源上限
         // mem_limit 程序运行可以使用的最大内存资源上限
         static int Run(const std::string &file_name,int cpu_limit,int mem_limit)
         {
-            // 1. 代码跑完 正确  2. 代码跑完 错误 3. 代码跑完 异常
+
             // 运行逻辑不需要判断结果正确与否
 
             // 一个程序在启动时
@@ -90,7 +90,7 @@ namespace ns_runner
                 close(_stderr_fd);
                 int status = 0;
                 waitpid(pid, &status, 0);
-                // 程序运行异常，一定是收到了信号
+
                 LOG(INFO) << "运行完毕, info: " << (status & 0x7F) << std::endl;
                 return status & 0x7F;
             }

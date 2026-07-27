@@ -103,10 +103,10 @@ namespace ns_model
 
                 out->push_back(q);
             }
-            LOG(INFO) << "questions填充完毕" << "\n";
+            //LOG(INFO) << "questions填充完毕" << "\n";
             // 释放结果空间
             mysql_free_result(res);
-            LOG(INFO) << "释放空间成功" << "\n";
+            //LOG(INFO) << "释放空间成功" << "\n";
             // 关闭mysql连接
             mysql_close(my);
             LOG(INFO) << "关闭mysql链接成功" << "\n";

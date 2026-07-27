@@ -1,6 +1,6 @@
 .PHONY:all
 all: 
-	@cd complier_server;\
+	@cd complie_server;\
 	make;\
 	cd -;\
 	cd oj_server;\

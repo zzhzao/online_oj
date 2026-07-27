@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include "oj_model.hpp"
+#include "oj_model2.hpp"
 #include <fstream>
 #include<algorithm>
 #include "../comm/util.hpp"
@@ -184,7 +184,7 @@ namespace ns_control
 
             LOG(INFO) << "所有的主机上线 "<< "\n";
         }
-        // for test
+ 
         void ShowMachine()
         {
             mtx.lock();
@@ -204,7 +204,6 @@ namespace ns_control
         }
     };
 
-    ///////////////////////////////////////////////
 
     // 核心业务
     class Control

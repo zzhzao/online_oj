@@ -20,7 +20,6 @@ namespace ns_compile_and_run
 
         static void RemoveTempFile(const std::string &file_name)
         {
-            //清理文件的个数是不确定的
             std::string _src = PathUtil::Src(file_name);
             if (FileUtil::IsFileExists(_src))
             {
@@ -131,6 +130,7 @@ namespace ns_compile_and_run
                 // out_value["status"] = -2; // 写入文件失败
                 // out_value["reason"] = "发生了未知错误";
                 // return;
+                //LOG(ERROR) << "写入文件失败" << "\n";
                 status_code = -2;
                 goto END;
             }
@@ -148,6 +148,7 @@ namespace ns_compile_and_run
                 // out_value["status"] = -2; // 内部错误
                 // out_value["reason"] = "发生了未知错误";
                 // return;
+                //LOG(ERROR) << "内部错误" << "\n";
                 status_code = -2;
                 goto END;
             }
